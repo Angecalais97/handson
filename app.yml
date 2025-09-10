@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: l2n-eks-deployment
+  labels:
+    app: l2n-eks
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: l2n-eks
+  template:
+    metadata:
+      labels:
+        app: l2n-eks
+    spec:
+      containers:
+      - name: l2n-eks
+        image: s5carles/l2n-eks:v0
+        ports:
+        - containerPort: 8080   # change if your
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: l2n-eks-service
+spec:
+  selector:
+    app: l2n-eks
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
+
